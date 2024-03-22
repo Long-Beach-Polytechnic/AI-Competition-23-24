@@ -2,7 +2,6 @@ public class Map{
 
   private Cell[][] map;
   private Cell[][] coveredMap;
-  private Player player;
 
   public Map()
   {
@@ -74,12 +73,6 @@ public class Map{
   public void place(Movable movable)
   {
     coveredMap[movable.getRow()][movable.getCol()] = movable.getToken();
-  }
-
-  public void addPlayer(Player player)
-  {
-    this.player = player;
-    place(player);
   }
 
   public int countCell(Cell findCell)
