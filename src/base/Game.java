@@ -55,7 +55,7 @@ public class Game {
     team2 = new ArrayList<Character>();
     for (int col=2; col<map.getCols()-2; col+=3)
     {
-      team2.add(new Easy(new Cell("*",TextColor.CYAN_BOLD), 15,col,STARTING_HEALTH));
+      team2.add(new Medium(new Cell("*",TextColor.CYAN_BOLD), 15,col,STARTING_HEALTH));
     }
 
     itemsOnMap = new ArrayList<Item>();
