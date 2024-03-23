@@ -1,5 +1,5 @@
 package src.ai;
 
-public class Hard {
+public class Hard extends Character {
   
 }
