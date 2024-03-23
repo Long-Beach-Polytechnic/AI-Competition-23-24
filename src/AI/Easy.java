@@ -1,3 +1,4 @@
+package AI;
 import java.util.ArrayList;
 
 public class Easy extends Character {
