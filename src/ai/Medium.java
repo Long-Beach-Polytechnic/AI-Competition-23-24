@@ -59,7 +59,7 @@ public class Medium extends Character {
             }
             if (item.isLocatedAt(row,col) && item.isHeal())
             {
-                points += 50;
+                points += 51;
             }
         }
         for (Character teamMate:team)
