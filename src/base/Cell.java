@@ -1,3 +1,4 @@
+package src.base;
 public class Cell{
 
   private String symbol;

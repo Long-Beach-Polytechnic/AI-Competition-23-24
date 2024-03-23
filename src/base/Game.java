@@ -1,9 +1,12 @@
+package src.base;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import src.ai.*;
 
 public class Game {
 

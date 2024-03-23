@@ -1,3 +1,4 @@
+package src.base;
 public class Item extends Movable{
 
   private int healthModifier;

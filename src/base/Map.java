@@ -1,3 +1,4 @@
+package src.base;
 public class Map{
 
   private Cell[][] map;

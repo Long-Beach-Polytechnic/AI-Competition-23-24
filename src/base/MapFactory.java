@@ -1,3 +1,4 @@
+package src.base;
 public class MapFactory{
 
   //               object name              symbol    color                       canPass
