@@ -19,7 +19,6 @@ public class TeamHard extends Team {
     characters.add(new Hard());
     characters.add(new Hard());
   }
-
   @Override
   public void initializeMaze()
   {

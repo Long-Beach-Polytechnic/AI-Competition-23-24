@@ -17,7 +17,7 @@ public class Item extends Movable{
   {
     if (code == HEAL)
     {
-      return new Item(new Cell("+",TextColor.CYAN),row,col,HEALTH_BOOST);
+      return new Item(new Cell("+",TextColor.CYAN_BOLD),row,col,HEALTH_BOOST);
     }
     if (code == MINE)
     {

@@ -15,8 +15,8 @@ class Main {
     * 2. Learn recursive logic
     */
     
-    Game game = new Game();
+    SimulationRunner sim = new SimulationRunner();
 
-    game.run();
+    sim.run();
   }
 }
