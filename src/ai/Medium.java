@@ -1,25 +1,20 @@
 package src.ai;
 
-import java.util.ArrayList;
-
 import src.base.*;
 import src.base.Character;
 
+import java.util.ArrayList;
+
 public class Medium extends Character {
 
-    public Medium(Cell token, int row, int col, int hp)
+    public Medium()
     {
-      super(token,row,col,hp);
-    }
-
-    public Medium(Character character)
-    {
-        super(character.getToken(), character.getRow(), character.getCol(), character.getHealth());
+        super();
     }
 
     @Override
     public int getDirection(Map map, ArrayList<Item> items, ArrayList<Character> team, ArrayList<Character> enemyTeam)
-   {
+    {
         int pointsUp =      calcPointsIfGoingTo(row-1, col, map, items, team, enemyTeam);
         int pointsDown =    calcPointsIfGoingTo(row+1, col, map, items, team, enemyTeam);
         int pointsLeft =    calcPointsIfGoingTo(row, col-1, map, items, team, enemyTeam);
@@ -42,10 +37,10 @@ public class Medium extends Character {
             return MOVE_RIGHT;
         }
         return DONT_MOVE;
-   }
+    }
 
-   private int calcPointsIfGoingTo(int row, int col, Map map, ArrayList<Item> items, ArrayList<Character> team, ArrayList<Character> enemyTeam)
-   {
+    private int calcPointsIfGoingTo(int row, int col, Map map, ArrayList<Item> items, ArrayList<Character> team, ArrayList<Character> enemyTeam)
+    {
         int points = 0;
         if (!map.getCell(row,col).canPass())
         {
@@ -70,7 +65,7 @@ public class Medium extends Character {
             }
         }
         return points;
-   }
+    }
 
 
 

@@ -4,16 +4,18 @@ import java.util.ArrayList;
 public class SimulationManager {
 
   private static ArrayList<Simulation> simulations = new ArrayList<Simulation>();
+  private static int simCounter = 0;
 
-  public static void add(int simNumber, int numTurns)
+  public static void add(Team team1, Team team2, String result)
   {
-    simulations.add(new Simulation(simNumber, numTurns));
+    simCounter++;
+    simulations.add(new Simulation(simCounter, team1, team2, result));
   }
 
   public static void printResults()
   {
     printAllSimulations();
-    printAverageRun();
+    //printAverageRun();
   }
 
   public static void printAllSimulations()
@@ -21,6 +23,7 @@ public class SimulationManager {
     System.out.println(simulations);
   }
 
+  /*
   public static void printAverageRun()
   {
     int totalTurns = 0;
@@ -30,5 +33,6 @@ public class SimulationManager {
     }
     System.out.println("Average Turns:\t" + ((double) totalTurns / simulations.size()));
   }
+  */
   
 }

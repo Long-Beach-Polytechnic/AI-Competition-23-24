@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class Easy extends Character {
 
-  public Easy(Cell token, int row, int col, int hp)
+  public Easy()
   {
-    super(token,row,col,hp);
+    super();
   }
 
   public int getDirection(Map map, ArrayList<Item> items, ArrayList<Character> team, ArrayList<Character> enemyTeam)

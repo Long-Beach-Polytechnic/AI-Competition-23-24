@@ -11,9 +11,13 @@ import src.ai.*;
 public class Game {
 
   private Map map;
-  private ArrayList<Character> team1;
-  private ArrayList<Character> team2;
+  private Team team1;
+  private Team team2;
+  private Team currentTeam;
+  private ArrayList<Character> team1characters;
+  private ArrayList<Character> team2characters;
   private ArrayList<Item> itemsOnMap;
+  private String result;
   private int turnCounter;
   private boolean keepPlaying;
   private int simulationCounter = 0;
@@ -22,7 +26,6 @@ public class Game {
   private static final int NUMBER_OF_COLS = 20;
   private static final int NUMBER_OF_STARTING_MINES = 50;
   private static final boolean MAP_IS_MAZE = false;
-  private static final int STARTING_HEALTH = 500;
 
   private static final int SIMULATION_DELAY_MILLISECONDS = 100;
   private static final int PAUSE_TIME_MILLISECONDS = 2000;
@@ -46,17 +49,14 @@ public class Game {
       map = MapFactory.arena(NUMBER_OF_ROWS, NUMBER_OF_COLS);
     }
 
-    team1 = new ArrayList<Character>();
-    for (int col=2; col<map.getCols()-2; col+= 3)
-    {
-      team1.add(new Character(new Cell("*",TextColor.WHITE), 5,col, STARTING_HEALTH));
-    }
+    
+    team1 = AllTeams.getTeam(2);
+    team1.setupForArena(true);
+    team1characters = team1.getCharacters();
 
-    team2 = new ArrayList<Character>();
-    for (int col=2; col<map.getCols()-2; col+=3)
-    {
-      team2.add(new Medium(new Cell("*",TextColor.CYAN_BOLD), 15,col,STARTING_HEALTH));
-    }
+    team2 = AllTeams.getTeam(3);
+    team2.setupForArena(false);
+    team2characters = team2.getCharacters();
 
     itemsOnMap = new ArrayList<Item>();
     for (int i=0; i<NUMBER_OF_STARTING_MINES; i++)
@@ -85,14 +85,14 @@ public class Game {
           spotIsTaken = true;
         }
       }
-      for (Movable player:team1)
+      for (Movable player:team1characters)
       {
         if (player.isLocatedAt(row,col))
         {
           spotIsTaken = true;
         }
       }
-      for (Movable player:team2)
+      for (Movable player:team2characters)
       {
         if (player.isLocatedAt(row,col))
         {
@@ -126,14 +126,14 @@ public class Game {
           spotIsTaken = true;
         }
       }
-      for (Movable player:team1)
+      for (Movable player:team1characters)
       {
         if (player.isLocatedAt(row,col))
         {
           spotIsTaken = true;
         }
       }
-      for (Movable player:team2)
+      for (Movable player:team2characters)
       {
         if (player.isLocatedAt(row,col))
         {
@@ -160,11 +160,11 @@ public class Game {
       map.display(); //display the map
       displayInformation();
       if (turnCounter%2 == 0){
-        makeMoves(team1,team2);
-        checkIfEventIsTriggered(team1);
+        makeMoves(team1characters,team2characters);
+        checkIfEventIsTriggered(team1characters);
       } else {
-        makeMoves(team2,team1);
-        checkIfEventIsTriggered(team2);
+        makeMoves(team2characters,team1characters);
+        checkIfEventIsTriggered(team2characters);
       }
       //checkIfEventIsTriggered(); //program what happens in certain cells
       bothTeamsTakeDamage();
@@ -172,15 +172,39 @@ public class Game {
 
       sleep(SIMULATION_DELAY_MILLISECONDS);
 
-      if (team1.isEmpty() || team2.isEmpty())
+      if (team1characters.isEmpty() && team2characters.isEmpty())
       {
+        result = "TIE";
+        team1.addTie();
+        team2.addTie();
         sleep(PAUSE_TIME_MILLISECONDS);
         keepPlaying = false;
       }
+
+      if (team2characters.isEmpty() && team1characters.size() > 0)
+      {
+        result = team1.getName();
+        team1.addWin();
+        team2.addLoss();
+        sleep(PAUSE_TIME_MILLISECONDS);
+        keepPlaying = false;
+      }
+
+      if (team1characters.isEmpty() && team2characters.size() > 0)
+      {
+        result = team2.getName();
+        team1.addLoss();
+        team2.addWin();
+        sleep(PAUSE_TIME_MILLISECONDS);
+        keepPlaying = false;
+      }
+
       
     }
 
-    displaySimulationResults();
+    displayResults();
+
+
     sleep(PAUSE_TIME_MILLISECONDS);
     run(); //start game over
   }
@@ -201,11 +225,11 @@ public class Game {
   private void putThingsOnTheMap()
   {
     map.cloneMap();
-    for (Movable player:team1)
+    for (Movable player:team1characters)
     {
       map.place(player);
     }
-    for (Movable player:team2)
+    for (Movable player:team2characters)
     {
       map.place(player);
     }
@@ -219,15 +243,15 @@ public class Game {
   {
     System.out.println("Simulation #" + simulationCounter);
     System.out.println("Turn:\t" + turnCounter);
-    System.out.print("Team 1:\t" + team1.size() + " ");
-    for (Character player:team1)
+    System.out.print(team1.getName() + ":\t");
+    for (Character player:team1characters)
     {
       System.out.print(player.getHealth() + " " );
     }
     System.out.println();
 
-    System.out.print("Team 2:\t" + team2.size() + " ");
-    for (Character player:team2)
+    System.out.print(team2.getName() + ":\t");
+    for (Character player:team2characters)
     {
       System.out.print(player.getHealth() + " " );
     }
@@ -288,68 +312,68 @@ public class Game {
 
   private void characterToCharacterCollisions()
   {
-    for (int playerIndex=0; playerIndex<team1.size(); playerIndex++)
+    for (int playerIndex=0; playerIndex<team1characters.size(); playerIndex++)
     {
-      Character player = team1.get(playerIndex);
+      Character player = team1characters.get(playerIndex);
 
-      for (int teamMemberIndex = 0; teamMemberIndex < team1.size(); teamMemberIndex++)
+      for (int teamMemberIndex = 0; teamMemberIndex < team1characters.size(); teamMemberIndex++)
       {
-        Character teamMember = team1.get(teamMemberIndex);
+        Character teamMember = team1characters.get(teamMemberIndex);
         if (player != teamMember && player.isLocatedAt(teamMember.getRow(),teamMember.getCol()))
         {
           if (player.getHealth() > teamMember.getHealth())
           {
-            team1.remove(teamMemberIndex);
+            team1characters.remove(teamMemberIndex);
             teamMemberIndex--;
-            System.out.println("KILLED OWN TEAM");
-            Util.pauseConsole();
+            System.out.println(team1.getName() + " KILLED OWN TEAM");
+            sleep(500);
           }
           else if (player.getHealth() == teamMember.getHealth())
           {
-            team1.remove(teamMemberIndex);
+            team1characters.remove(teamMemberIndex);
             teamMemberIndex--;
-            team1.remove(playerIndex);
+            team1characters.remove(playerIndex);
             playerIndex--;
-            System.out.println("MUTUAL self team DEATH");
-            Util.pauseConsole();
+            System.out.println(team1.getName() + "MUTUAL self team DEATH");
+            sleep(500);
           }
           else
           {
-            team1.remove(playerIndex);
+            team1characters.remove(playerIndex);
             playerIndex--;
-            System.out.println("KILLED OWN TEAM");
-            Util.pauseConsole();
+            System.out.println(team1.getName() + " KILLED OWN TEAM");
+            sleep(500);
           }
         }
       }
 
-      for (int enemyMemberIndex = 0; enemyMemberIndex < team2.size(); enemyMemberIndex++)
+      for (int enemyMemberIndex = 0; enemyMemberIndex < team2characters.size(); enemyMemberIndex++)
       {
-        Character enemy = team2.get(enemyMemberIndex);
+        Character enemy = team2characters.get(enemyMemberIndex);
         if (player.isLocatedAt(enemy.getRow(),enemy.getCol()))
         {
           if (player.getHealth() > enemy.getHealth())
           {
-            team2.remove(enemyMemberIndex);
+            team2characters.remove(enemyMemberIndex);
             enemyMemberIndex--;
-            System.out.println("KILLED OTHER TEAM");
-            Util.pauseConsole();
+            System.out.println(team1.getName() + " KILLED " + team2.getName());
+            sleep(500);
           }
           else if (player.getHealth() == enemy.getHealth())
           {
-            team2.remove(enemyMemberIndex);
+            team2characters.remove(enemyMemberIndex);
             enemyMemberIndex--;
-            team1.remove(playerIndex);
+            team1characters.remove(playerIndex);
             playerIndex--;
-            System.out.println("MUTUAL TEAM 2 OTHERTEAM team DEATH");
-            Util.pauseConsole();
+            System.out.println("BOTH TEAMS DIE");
+            sleep(500);
           }
           else
           {
-            team1.remove(playerIndex);
+            team1characters.remove(playerIndex);
             playerIndex--;
-            System.out.println("DIED to other TEAM");
-            Util.pauseConsole();
+            System.out.println(team2.getName() + " KILLED " + team1.getName());
+            sleep(500);
           }
         }
       }
@@ -358,20 +382,20 @@ public class Game {
 
   private void bothTeamsTakeDamage()
   {
-    for (Character player:team1)
+    for (Character player:team1characters)
     {
       player.modifyHealth(-1);
     }
-    for (Character player:team2)
+    for (Character player:team2characters)
     {
       player.modifyHealth(-1);
     }
   }
 
-  private void displaySimulationResults()
+  private void displayResults()
   {
     Util.clearConsole();
-    SimulationManager.add(simulationCounter,turnCounter);
+    SimulationManager.add(team1,team2, result);
     SimulationManager.printResults();
   }
 

@@ -1,11 +1,10 @@
 package src.base;
 import java.util.ArrayList;
 
-public class Team<T extends Character> {
+public class Team {
 
-  /*
-  private ArrayList<Character> characters;
-  private Cell token;
+  private String teamName;
+  protected ArrayList<Character> characters;
   private int numKills;
   private int numWins;
   private int numLosses;
@@ -13,41 +12,89 @@ public class Team<T extends Character> {
 
   private static final int STARTING_HEALTH = 500;
 
-  public Team(Cell token)
+  public Team(String teamName)
   {
-    this.token = token;
+    this.teamName = teamName;
     this.characters = new ArrayList<Character>();
     this.numKills = 0;
   }
 
-  public void setupMap1(Map map, boolean isTeam1)
+  public void initializeArena()
   {
+
+  }
+
+  public void initializeMaze()
+  {
+    
+  }
+
+  public void setupForArena(boolean isTeam1)
+  {
+    initializeArena();
+    trimTeam();
+
+    int startingRow = -1;
+    Cell teamToken;
     if (isTeam1)
     {
-      for (int col=2; col<map.getCols()-2; col+= 3)
-      {
-        characters.add(new T(new Cell("*",TextColor.WHITE), 5,col, STARTING_HEALTH));
-      }
+      startingRow = 4;
+      teamToken = new Cell("*",TextColor.WHITE);
     }
     else
     {
-      for (int col=2; col<map.getCols()-2; col+=3)
-      {
-          characters.add(new T(new Cell("*",TextColor.CYAN_BOLD), 15,col,STARTING_HEALTH));
-      }
+      startingRow = 15;
+      teamToken = new Cell("#",TextColor.WHITE);
+    }
+    int startingCol = 4;
+    for (int characterIndex = 0; characterIndex < characters.size(); characterIndex++)
+    {
+        Character currenCharacter = characters.get(characterIndex);
+        currenCharacter.setRow(startingRow);
+        currenCharacter.setCol(startingCol);
+        currenCharacter.setToken(teamToken);
+
+        startingCol += 3;
     }
   }
 
-  public void setupMap2(Map map, boolean isTeam1)
+  public void setupForMaze(boolean isTeam1)
   {
+    initializeMaze();
+    trimTeam();
+    
+    int startingRow = -1;
+    Cell teamToken;
     if (isTeam1)
     {
-
+      startingRow = 4;
+      teamToken = new Cell("*",TextColor.WHITE);
     }
     else
     {
-
+      startingRow = 15;
+      teamToken = new Cell("#",TextColor.WHITE);
     }
+    int startingCol = 4;
+    for (int characterIndex = 0; characterIndex < characters.size(); characterIndex++)
+    {
+        Character currenCharacter = characters.get(characterIndex);
+        currenCharacter.setRow(startingRow);
+        currenCharacter.setCol(startingCol);
+        currenCharacter.setToken(teamToken);
+
+        startingCol += 3;
+    }
+  }
+
+  public ArrayList<Character> getCharacters()
+  {
+    return characters;
+  }
+
+  public String getName()
+  {
+    return teamName;
   }
 
   public int getWins()
@@ -70,19 +117,28 @@ public class Team<T extends Character> {
     return numKills;
   }
 
-  public int addWin()
+  public void addWin()
   {
     numWins++;
   }
 
-  public int addLoss()
+  public void addLoss()
   {
     numLosses++;
   }
 
-  public int addTie()
+  public void addTie()
   {
     numTies++;
   }
-  */
+
+  public void trimTeam()
+  {
+    while (characters.size() > 5)
+    {
+      characters.remove(0);
+    }
+  }
+
+
 }
