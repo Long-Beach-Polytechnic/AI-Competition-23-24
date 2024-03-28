@@ -13,22 +13,29 @@ public class Game {
   private Map map;
   private Team team1;
   private Team team2;
-  private Team currentTeam;
   private ArrayList<Character> team1characters;
   private ArrayList<Character> team2characters;
   private ArrayList<Item> itemsOnMap;
   private String result;
   private int turnCounter;
   private boolean keepPlaying;
-  private int simulationCounter = 0;
+  private int simulationCounter;
   
-  private static final int NUMBER_OF_ROWS = 20;
-  private static final int NUMBER_OF_COLS = 20;
+  private static final int NUMBER_OF_ROWS = 21;
+  private static final int NUMBER_OF_COLS = 21;
   private static final int NUMBER_OF_STARTING_MINES = 50;
   private static final boolean MAP_IS_MAZE = false;
 
   private static final int SIMULATION_DELAY_MILLISECONDS = 100;
   private static final int PAUSE_TIME_MILLISECONDS = 2000;
+
+  public Game(Team team1, Team team2)
+  {
+    this.team1 = team1;
+    this.team2 = team2;
+    this.simulationCounter = 0;
+  }
+
 
   public void run()
   {
@@ -40,22 +47,20 @@ public class Game {
 
   private void initialize()
   {
-    if (MAP_IS_MAZE)
+    if (simulationCounter < 8)
     {
-      map = MapFactory.maze(NUMBER_OF_ROWS, NUMBER_OF_COLS);
+      map = MapFactory.arena(NUMBER_OF_ROWS, NUMBER_OF_COLS);
+      team1.setupForArena( 1 + simulationCounter%2);
+      team2.setupForArena(2 -simulationCounter%2);
     }
     else
     {
-      map = MapFactory.arena(NUMBER_OF_ROWS, NUMBER_OF_COLS);
+      map = MapFactory.maze(NUMBER_OF_ROWS, NUMBER_OF_COLS);
+      team1.setupForMaze(1 + simulationCounter%2);
+      team2.setupForMaze(2 -simulationCounter%2);
     }
 
-    
-    team1 = AllTeams.getTeam(2);
-    team1.setupForArena(true);
     team1characters = team1.getCharacters();
-
-    team2 = AllTeams.getTeam(3);
-    team2.setupForArena(false);
     team2characters = team2.getCharacters();
 
     itemsOnMap = new ArrayList<Item>();
@@ -206,7 +211,11 @@ public class Game {
 
 
     sleep(PAUSE_TIME_MILLISECONDS);
-    run(); //start game over
+    if (simulationCounter <= 10)
+    {
+      run(); //start game over
+    }
+    
   }
 
   private void addItemToMap()

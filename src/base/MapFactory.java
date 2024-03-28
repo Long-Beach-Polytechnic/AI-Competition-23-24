@@ -2,7 +2,7 @@ package src.base;
 public class MapFactory{
 
   //               object name              symbol    color                       canPass
-  public static final Cell GRASS =       new Cell("\"",   TextColor.GREEN_BOLD_BRIGHT,  true);
+  public static final Cell GRASS =       new Cell("\"",   TextColor.GREEN_BRIGHT,  true);
   public static final Cell WATER =       new Cell("~",    TextColor.CYAN_BACKGROUND,    false);
   public static final Cell MINE  =       new Cell("o",    TextColor.RED_BACKGROUND, true);
   public static final Cell TELEPORT  =   new Cell("T",    TextColor.GREEN_BACKGROUND, true);
@@ -48,7 +48,7 @@ public class MapFactory{
         {
           map[row][col] = BORDER_VERT;
         }
-        else if ( row > 2 && row < rows-2 && (col > 4 && row%8 == 0) || (col < cols-4 && row%8 == 4))
+        else if ( row > 2 && row < rows-2 && (col > 4 && row%8 == 0) || (col < cols-5 && row%8 == 4))
         {
           map[row][col] = BORDER_HOR;
         }

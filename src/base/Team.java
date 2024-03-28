@@ -29,22 +29,22 @@ public class Team {
     
   }
 
-  public void setupForArena(boolean isTeam1)
+  public void setupForArena(int teamNumber)
   {
     initializeArena();
     trimTeam();
 
     int startingRow = -1;
     Cell teamToken;
-    if (isTeam1)
+    if (teamNumber == 1)
     {
       startingRow = 4;
-      teamToken = new Cell("*",TextColor.WHITE);
+      teamToken = new Cell("@",TextColor.WHITE_BOLD);
     }
     else
     {
       startingRow = 15;
-      teamToken = new Cell("#",TextColor.WHITE);
+      teamToken = new Cell("#",TextColor.WHITE_BOLD);
     }
     int startingCol = 4;
     for (int characterIndex = 0; characterIndex < characters.size(); characterIndex++)
@@ -58,14 +58,14 @@ public class Team {
     }
   }
 
-  public void setupForMaze(boolean isTeam1)
+  public void setupForMaze(int teamNumber)
   {
     initializeMaze();
     trimTeam();
     
     int startingRow = -1;
     Cell teamToken;
-    if (isTeam1)
+    if (teamNumber == 1)
     {
       startingRow = 4;
       teamToken = new Cell("*",TextColor.WHITE);
