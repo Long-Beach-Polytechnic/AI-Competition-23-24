@@ -11,6 +11,7 @@ import src.ai.*;
 public class Game {
 
   private Map map;
+  private String currentMapName;
   private Team team1;
   private Team team2;
   private ArrayList<Character> team1characters;
@@ -50,12 +51,14 @@ public class Game {
     if (simulationCounter < 8)
     {
       map = MapFactory.arena(NUMBER_OF_ROWS, NUMBER_OF_COLS);
+      currentMapName = "Arena";
       team1.setupForArena( 1 + simulationCounter%2);
       team2.setupForArena(2 -simulationCounter%2);
     }
     else
     {
       map = MapFactory.maze(NUMBER_OF_ROWS, NUMBER_OF_COLS);
+      currentMapName = "Maze";
       team1.setupForMaze(1 + simulationCounter%2);
       team2.setupForMaze(2 -simulationCounter%2);
     }
@@ -211,7 +214,7 @@ public class Game {
 
 
     sleep(PAUSE_TIME_MILLISECONDS);
-    if (simulationCounter <= 10)
+    if (simulationCounter < 10)
     {
       run(); //start game over
     }
@@ -321,40 +324,13 @@ public class Game {
 
   private void characterToCharacterCollisions()
   {
+    teamSelfCollisions(team1);
+    teamSelfCollisions(team2);
+
+    //teams attacking each other
     for (int playerIndex=0; playerIndex<team1characters.size(); playerIndex++)
     {
       Character player = team1characters.get(playerIndex);
-
-      for (int teamMemberIndex = 0; teamMemberIndex < team1characters.size(); teamMemberIndex++)
-      {
-        Character teamMember = team1characters.get(teamMemberIndex);
-        if (player != teamMember && player.isLocatedAt(teamMember.getRow(),teamMember.getCol()))
-        {
-          if (player.getHealth() > teamMember.getHealth())
-          {
-            team1characters.remove(teamMemberIndex);
-            teamMemberIndex--;
-            System.out.println(team1.getName() + " KILLED OWN TEAM");
-            sleep(500);
-          }
-          else if (player.getHealth() == teamMember.getHealth())
-          {
-            team1characters.remove(teamMemberIndex);
-            teamMemberIndex--;
-            team1characters.remove(playerIndex);
-            playerIndex--;
-            System.out.println(team1.getName() + "MUTUAL self team DEATH");
-            sleep(500);
-          }
-          else
-          {
-            team1characters.remove(playerIndex);
-            playerIndex--;
-            System.out.println(team1.getName() + " KILLED OWN TEAM");
-            sleep(500);
-          }
-        }
-      }
 
       for (int enemyMemberIndex = 0; enemyMemberIndex < team2characters.size(); enemyMemberIndex++)
       {
@@ -366,6 +342,7 @@ public class Game {
             team2characters.remove(enemyMemberIndex);
             enemyMemberIndex--;
             System.out.println(team1.getName() + " KILLED " + team2.getName());
+            team1.addKill();
             sleep(500);
           }
           else if (player.getHealth() == enemy.getHealth())
@@ -375,6 +352,8 @@ public class Game {
             team1characters.remove(playerIndex);
             playerIndex--;
             System.out.println("BOTH TEAMS DIE");
+            team1.addKill();
+            team2.addKill();
             sleep(500);
           }
           else
@@ -382,6 +361,51 @@ public class Game {
             team1characters.remove(playerIndex);
             playerIndex--;
             System.out.println(team2.getName() + " KILLED " + team1.getName());
+            team2.addKill();
+            sleep(500);
+          }
+        }
+      }
+    }
+  }
+
+  private void teamSelfCollisions(Team team)
+  {
+    ArrayList<Character> teamCharacters = team.getCharacters();
+    for (int playerIndex=0; playerIndex<teamCharacters.size(); playerIndex++)
+    {
+      Character player = teamCharacters.get(playerIndex);
+
+      for (int teamMemberIndex = 0; teamMemberIndex < teamCharacters.size(); teamMemberIndex++)
+      {
+        Character teamMember = teamCharacters.get(teamMemberIndex);
+        if (player != teamMember && player.isLocatedAt(teamMember.getRow(),teamMember.getCol()))
+        {
+          if (player.getHealth() > teamMember.getHealth())
+          {
+            teamCharacters.remove(teamMemberIndex);
+            teamMemberIndex--;
+            System.out.println(team1.getName() + " KILLED OWN TEAM");
+            team.addKill();
+            sleep(500);
+          }
+          else if (player.getHealth() == teamMember.getHealth())
+          {
+            teamCharacters.remove(teamMemberIndex);
+            teamMemberIndex--;
+            teamCharacters.remove(playerIndex);
+            playerIndex--;
+            System.out.println(team.getName() + "MUTUAL self team DEATH");
+            team.addKill();
+            team.addKill();
+            sleep(500);
+          }
+          else
+          {
+            teamCharacters.remove(playerIndex);
+            playerIndex--;
+            System.out.println(team.getName() + " KILLED OWN TEAM");
+            team.addKill();
             sleep(500);
           }
         }
@@ -404,7 +428,7 @@ public class Game {
   private void displayResults()
   {
     Util.clearConsole();
-    SimulationManager.add(team1,team2, result);
+    SimulationManager.add(currentMapName, team1,team2, result);
     SimulationManager.printResults();
   }
 

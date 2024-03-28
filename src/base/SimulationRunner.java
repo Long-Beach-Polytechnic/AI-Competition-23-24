@@ -30,7 +30,8 @@ public class SimulationRunner {
                                     currentTeam.getWins() + " W\t" +
                                     currentTeam.getLosses() + " L\t" +
                                     currentTeam.getTies() + " T\t" +
-                                    pts + " points"
+                                    currentTeam.getNumKills() + " Kills " +
+                                    currentTeam.getPoints() + " points"
                                 );
         }
     }

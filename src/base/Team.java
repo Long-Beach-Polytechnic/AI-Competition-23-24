@@ -117,6 +117,11 @@ public class Team {
     return numKills;
   }
 
+  public int getPoints()
+  {
+    return numWins * 10 + numTies * 5 + numKills;
+  }
+
   public void addWin()
   {
     numWins++;
@@ -130,6 +135,11 @@ public class Team {
   public void addTie()
   {
     numTies++;
+  }
+
+  public void addKill()
+  {
+    numKills++;
   }
 
   public void trimTeam()

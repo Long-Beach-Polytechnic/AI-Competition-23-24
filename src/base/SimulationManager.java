@@ -6,10 +6,10 @@ public class SimulationManager {
   private static ArrayList<Simulation> simulations = new ArrayList<Simulation>();
   private static int simCounter = 0;
 
-  public static void add(Team team1, Team team2, String result)
+  public static void add(String mapName, Team team1, Team team2, String result)
   {
     simCounter++;
-    simulations.add(new Simulation(simCounter, team1, team2, result));
+    simulations.add(new Simulation(simCounter, mapName, team1, team2, result));
   }
 
   public static void printResults()
@@ -22,17 +22,5 @@ public class SimulationManager {
   {
     System.out.println(simulations);
   }
-
-  /*
-  public static void printAverageRun()
-  {
-    int totalTurns = 0;
-    for (Simulation sim:simulations)
-    {
-      totalTurns += sim.getNumTurns();
-    }
-    System.out.println("Average Turns:\t" + ((double) totalTurns / simulations.size()));
-  }
-  */
   
 }
