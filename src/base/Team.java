@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Team {
 
   private String teamName;
+  private String color;
   protected ArrayList<Character> characters;
   private int numKills;
   private int numWins;
@@ -13,6 +14,7 @@ public class Team {
   public Team(String teamName)
   {
     this.teamName = teamName;
+    this.color = TextColor.WHITE;
     this.characters = new ArrayList<Character>();
     this.numKills = 0;
   }
@@ -36,13 +38,15 @@ public class Team {
     Cell teamToken;
     if (teamNumber == 1)
     {
+      this.color = TextColor.WHITE;
       startingRow = 4;
-      teamToken = new Cell("@",TextColor.WHITE_BOLD);
+      teamToken = new Cell("@",color);
     }
     else
     {
+      this.color = TextColor.YELLOW;
       startingRow = 15;
-      teamToken = new Cell("#",TextColor.WHITE_BOLD);
+      teamToken = new Cell("#",color);
     }
     int startingCol = 4;
     for (int characterIndex = 0; characterIndex < characters.size(); characterIndex++)
@@ -94,6 +98,11 @@ public class Team {
   public String getName()
   {
     return teamName;
+  }
+
+  public String getTeamColor()
+  {
+    return color;
   }
 
   public int getWins()

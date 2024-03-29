@@ -248,14 +248,14 @@ public class Game {
   {
     System.out.println("Simulation #" + simulationCounter);
     System.out.println("Turn:\t" + turnCounter);
-    System.out.print(team1.getName() + ":\t");
+    System.out.print(team1.getTeamColor() + team1.getName() + TextColor.RESET + ":\t");
     for (Character player:team1characters)
     {
       System.out.print(player.getHealth() + " " );
     }
     System.out.println();
 
-    System.out.print(team2.getName() + ":\t");
+    System.out.print(team2.getTeamColor() + team2.getName() + TextColor.RESET + ":\t");
     for (Character player:team2characters)
     {
       System.out.print(player.getHealth() + " " );
