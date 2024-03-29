@@ -9,7 +9,7 @@ public class TeamManager {
   private static ArrayList<Team> teams = new ArrayList<Team>();
 
   static {
-    teams.add(new TeamEasy("Easiest AI"));
+    teams.add(new TeamEasiest("Easiest AI"));
     teams.add(new TeamEasy("Easy AI"));
     teams.add(new TeamMedium("Medium AI"));
   }

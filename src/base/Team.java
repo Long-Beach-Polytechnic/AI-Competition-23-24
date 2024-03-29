@@ -10,8 +10,6 @@ public class Team {
   private int numLosses;
   private int numTies;
 
-  private static final int STARTING_HEALTH = 500;
-
   public Team(String teamName)
   {
     this.teamName = teamName;
@@ -50,8 +48,7 @@ public class Team {
     for (int characterIndex = 0; characterIndex < characters.size(); characterIndex++)
     {
         Character currenCharacter = characters.get(characterIndex);
-        currenCharacter.setRow(startingRow);
-        currenCharacter.setCol(startingCol);
+        currenCharacter.setLocation(startingRow, startingCol);
         currenCharacter.setToken(teamToken);
 
         startingCol += 3;
@@ -63,27 +60,29 @@ public class Team {
     initializeMaze();
     trimTeam();
     
-    int startingRow = -1;
     Cell teamToken;
     if (teamNumber == 1)
     {
-      startingRow = 4;
       teamToken = new Cell("*",TextColor.WHITE);
+      characters.get(0).setLocation(1, 19);
+      characters.get(1).setLocation(1, 17);
+      characters.get(2).setLocation(1, 15);
+      characters.get(3).setLocation(3, 18);
+      characters.get(4).setLocation(3, 16);
     }
     else
     {
-      startingRow = 15;
       teamToken = new Cell("#",TextColor.WHITE);
+      characters.get(0).setLocation(17,2);
+      characters.get(1).setLocation(17, 4);
+      characters.get(2).setLocation(19, 5);
+      characters.get(3).setLocation(19, 3);
+      characters.get(4).setLocation(19, 1);
     }
-    int startingCol = 4;
     for (int characterIndex = 0; characterIndex < characters.size(); characterIndex++)
     {
         Character currenCharacter = characters.get(characterIndex);
-        currenCharacter.setRow(startingRow);
-        currenCharacter.setCol(startingCol);
         currenCharacter.setToken(teamToken);
-
-        startingCol += 3;
     }
   }
 

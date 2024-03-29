@@ -1,12 +1,6 @@
 package src.base;
-import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
-import src.ai.*;
 
 public class Game {
 
@@ -25,7 +19,6 @@ public class Game {
   private static final int NUMBER_OF_ROWS = 21;
   private static final int NUMBER_OF_COLS = 21;
   private static final int NUMBER_OF_STARTING_MINES = 50;
-  private static final boolean MAP_IS_MAZE = false;
 
   private static final int SIMULATION_DELAY_MILLISECONDS = 100;
   private static final int PAUSE_TIME_MILLISECONDS = 2000;

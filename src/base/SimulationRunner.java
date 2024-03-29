@@ -25,7 +25,6 @@ public class SimulationRunner {
         for (int teamIndex = 0; teamIndex < TeamManager.getTotalTeams(); teamIndex++)
         {
             Team currentTeam = TeamManager.getTeam(teamIndex);
-            int pts = currentTeam.getWins() * 5 + currentTeam.getTies() * 2;
             System.out.println("Team:\t" + currentTeam.getName() + "\t" + 
                                     currentTeam.getWins() + " W\t" +
                                     currentTeam.getLosses() + " L\t" +

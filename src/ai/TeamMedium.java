@@ -1,7 +1,5 @@
 package src.ai;
 import src.base.*;
-import src.base.Character;
-import java.util.ArrayList;
 
 public class TeamMedium extends Team {
 

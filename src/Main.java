@@ -1,7 +1,5 @@
 package src;
-
 import src.base.*;
-import src.ai.*;
 ;
 
 class Main {
