@@ -21,6 +21,8 @@ public class SimulationRunner {
             }
         }
 
+        TeamManager.sortByMostPoints();
+
         System.out.println("\n\nRESULTS");
         for (int teamIndex = 0; teamIndex < TeamManager.getTotalTeams(); teamIndex++)
         {
@@ -29,7 +31,7 @@ public class SimulationRunner {
                                     currentTeam.getWins() + " W\t" +
                                     currentTeam.getLosses() + " L\t" +
                                     currentTeam.getTies() + " T\t" +
-                                    currentTeam.getNumKills() + " Kills " +
+                                    currentTeam.getNumKills() + " Kills\t" +
                                     currentTeam.getPoints() + " points"
                                 );
         }

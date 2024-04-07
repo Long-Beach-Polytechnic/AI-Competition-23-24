@@ -67,7 +67,8 @@ public class Team {
     Cell teamToken;
     if (teamNumber == 1)
     {
-      teamToken = new Cell("*",TextColor.WHITE);
+      this.color = TextColor.WHITE;
+      teamToken = new Cell("@",color);
       characters.get(0).setLocation(1, 19);
       characters.get(1).setLocation(1, 17);
       characters.get(2).setLocation(1, 15);
@@ -76,7 +77,8 @@ public class Team {
     }
     else
     {
-      teamToken = new Cell("#",TextColor.WHITE);
+      this.color = TextColor.YELLOW;
+      teamToken = new Cell("#",color);
       characters.get(0).setLocation(17,2);
       characters.get(1).setLocation(17, 4);
       characters.get(2).setLocation(19, 5);

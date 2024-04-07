@@ -20,6 +20,8 @@ public class Game {
   private static final int NUMBER_OF_COLS = 21;
   private static final int NUMBER_OF_STARTING_MINES = 50;
 
+  private static final boolean DOES_DISPLAY = false
+  ;
   private static final int SIMULATION_DELAY_MILLISECONDS = 100;
   private static final int PAUSE_TIME_MILLISECONDS = 2000;
 
@@ -157,9 +159,11 @@ public class Game {
     {
       addItemToMap();
       putThingsOnTheMap();
-      Util.clearConsole(); //clear the screen
-      map.display(); //display the map
-      displayInformation();
+      if (DOES_DISPLAY) {
+        Util.clearConsole(); //clear the screen
+        map.display(); //display the map
+        displayInformation();
+      }
       if (turnCounter%2 == 0){
         makeMoves(team1characters,team2characters);
         checkIfEventIsTriggered(team1characters);
@@ -173,7 +177,9 @@ public class Game {
 
       sleep(SIMULATION_DELAY_MILLISECONDS);
 
-      if (team1characters.isEmpty() && team2characters.isEmpty())
+      if (team1characters.isEmpty() && team2characters.isEmpty() ||
+          team1characters.isEmpty() && teamIsPracticallyDead(team2characters) ||
+          team2characters.isEmpty() && teamIsPracticallyDead(team1characters))
       {
         result = "TIE";
         team1.addTie();
@@ -181,8 +187,7 @@ public class Game {
         sleep(PAUSE_TIME_MILLISECONDS);
         keepPlaying = false;
       }
-
-      if (team2characters.isEmpty() && team1characters.size() > 0)
+      else if (team2characters.isEmpty() && team1characters.size() > 0)
       {
         result = team1.getName();
         team1.addWin();
@@ -190,8 +195,7 @@ public class Game {
         sleep(PAUSE_TIME_MILLISECONDS);
         keepPlaying = false;
       }
-
-      if (team1characters.isEmpty() && team2characters.size() > 0)
+      else if (team1characters.isEmpty() && team2characters.size() > 0)
       {
         result = team2.getName();
         team1.addLoss();
@@ -212,6 +216,15 @@ public class Game {
       run(); //start game over
     }
     
+  }
+
+  private boolean teamIsPracticallyDead(ArrayList<Character> teamMembers) {
+    for (Character member:teamMembers) {
+      if (member.getHealth() > 2) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private void addItemToMap()
@@ -427,9 +440,11 @@ public class Game {
 
   private void sleep(int milliseconds)
   {
-    try {
-      TimeUnit.MILLISECONDS.sleep(milliseconds);
-    } catch (InterruptedException e) {
+    if (DOES_DISPLAY) {
+      try {
+        TimeUnit.MILLISECONDS.sleep(milliseconds);
+      } catch (InterruptedException e) {
+      }
     }
   }
 

@@ -12,6 +12,7 @@ public class Hard extends Character {
     super();
   }
   
+  @Override
   public int getDirection(Map map, ArrayList<Item> items, ArrayList<Character> team, ArrayList<Character> enemyTeam)
   {
     int up    = calculateCellViability(row-1, col, map, team, items);
